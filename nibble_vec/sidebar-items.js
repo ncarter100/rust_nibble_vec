@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["NibbleVec","A data-structure for storing a sequence of 4-bit values."]]});

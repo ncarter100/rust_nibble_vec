@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `NibbleVec` struct in crate `nibble_vec`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, NibbleVec">
+
+    <title>nibble_vec::NibbleVec - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <section class="sidebar">
+        
+        <p class='location'><a href='index.html'>nibble_vec</a></p><script>window.sidebarCurrent = {name: 'NibbleVec', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </section>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press 'S' to search, '?' for more options..."
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>nibble_vec</a>::<wbr><a class='struct' href=''>NibbleVec</a><wbr></span><span class='out-of-band'><span id='render-detail'>
+            <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
+        </span><a id='src-8' href='../src/nibble_vec/lib.rs.html#21-24'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct NibbleVec {
+    // some fields omitted
+}</pre><div class='docblock'><p>A data-structure for storing a sequence of 4-bit values.</p>
+
+<p>Values are stored in a <code>Vec&lt;u8&gt;</code>, with two values per byte.</p>
+
+<p>Values at even indices are stored in the most-significant half of their byte,
+while values at odd indices are stored in the least-significant half.</p>
+
+<p>Imagine a vector of <a href="http://en.wikipedia.org/wiki/Most_significant_bit">MSB</a> first bytes, and you&#39;ll be right.</p>
+
+<p>n = [_ _ | _ _ | _ _]</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><a class='stability Unmarked' title='No stability level'></a><code>impl <a class='struct' href='../nibble_vec/struct.NibbleVec.html' title='nibble_vec::NibbleVec'>NibbleVec</a></code></h3><div class='impl-items'><h4 id='method.new' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.new' class='fnname'>new</a>() -&gt; <a class='struct' href='../nibble_vec/struct.NibbleVec.html' title='nibble_vec::NibbleVec'>NibbleVec</a></code></h4>
+<div class='docblock'><p>Create an empty nibble vector.</p>
+</div><h4 id='method.from_byte_vec' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.from_byte_vec' class='fnname'>from_byte_vec</a>(vec: <a class='struct' href='http://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>&gt;) -&gt; <a class='struct' href='../nibble_vec/struct.NibbleVec.html' title='nibble_vec::NibbleVec'>NibbleVec</a></code></h4>
+<div class='docblock'><p>Create a nibble vector from a vector of bytes.</p>
+
+<p>Each byte is split into two 4-bit entries (MSB, LSB).</p>
+</div><h4 id='method.len' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.len' class='fnname'>len</a>(&amp;self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a></code></h4>
+<div class='docblock'><p>Get the number of elements stored in the vector.</p>
+</div><h4 id='method.get' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.get' class='fnname'>get</a>(&amp;self, idx: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a></code></h4>
+<div class='docblock'><p>Fetch a single entry from the vector.</p>
+
+<p>Guaranteed to be a value in the interval [0, 15].</p>
+
+<p><strong>Panics</strong> if <code>idx &gt;= self.len()</code>.</p>
+</div><h4 id='method.push' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.push' class='fnname'>push</a>(&amp;mut self, val: <a href='http://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>)</code></h4>
+<div class='docblock'><p>Add a single nibble to the vector.</p>
+
+<p>Only the 4 least-significant bits of the value are used.</p>
+</div><h4 id='method.split' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.split' class='fnname'>split</a>(&amp;mut self, idx: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; <a class='struct' href='../nibble_vec/struct.NibbleVec.html' title='nibble_vec::NibbleVec'>NibbleVec</a></code></h4>
+<div class='docblock'><p>Split the vector into two parts.</p>
+
+<p>All elements at or following the given index are returned in a new <code>NibbleVec</code>,
+with exactly <code>idx</code> elements remaining in this vector.</p>
+
+<p><strong>Panics</strong> if <code>idx &gt; self.len()</code>.</p>
+</div><h4 id='method.join' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.join' class='fnname'>join</a>(self, other: &amp;<a class='struct' href='../nibble_vec/struct.NibbleVec.html' title='nibble_vec::NibbleVec'>NibbleVec</a>) -&gt; <a class='struct' href='../nibble_vec/struct.NibbleVec.html' title='nibble_vec::NibbleVec'>NibbleVec</a></code></h4>
+<div class='docblock'><p>Append another nibble vector whilst consuming this vector.</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><a class='stability Stable' title='Stable'></a><code>impl <a class='trait' href='http://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html' title='core::cmp::PartialEq'>PartialEq</a>&lt;<a class='struct' href='../nibble_vec/struct.NibbleVec.html' title='nibble_vec::NibbleVec'>NibbleVec</a>&gt; for <a class='struct' href='../nibble_vec/struct.NibbleVec.html' title='nibble_vec::NibbleVec'>NibbleVec</a></code></h3><div class='impl-items'><h4 id='method.eq' class='method'><a class='stability Stable' title='Stable'></a><code>fn <a href='#method.eq' class='fnname'>eq</a>(&amp;self, other: &amp;<a class='struct' href='../nibble_vec/struct.NibbleVec.html' title='nibble_vec::NibbleVec'>NibbleVec</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<h4 id='method.ne' class='tymethod'><a class='stability Stable' title='Stable'></a><code>fn <a href='#tymethod.ne' class='fnname'>ne</a>(&amp;self, other: &amp;Rhs) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+</div><h3 class='impl'><a class='stability Stable' title='Stable'></a><code>impl <a class='trait' href='http://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html' title='core::cmp::Eq'>Eq</a> for <a class='struct' href='../nibble_vec/struct.NibbleVec.html' title='nibble_vec::NibbleVec'>NibbleVec</a></code></h3><div class='impl-items'><h4 id='method.assert_receiver_is_total_eq' class='tymethod'><a class='stability Stable' title='Stable'></a><code>fn <a href='#tymethod.assert_receiver_is_total_eq' class='fnname'>assert_receiver_is_total_eq</a>(&amp;self)</code></h4>
+</div><h3 class='impl'><a class='stability Stable' title='Stable'></a><code>impl <a class='trait' href='http://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html' title='core::cmp::PartialEq'>PartialEq</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>[<a href='http://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>]</a>&gt; for <a class='struct' href='../nibble_vec/struct.NibbleVec.html' title='nibble_vec::NibbleVec'>NibbleVec</a></code></h3><div class='docblock'><p>Compare a NibbleVec and a slice of bytes <em>element-by-element</em>.
+Bytes are <strong>not</strong> interpreted as two NibbleVec entries.</p>
+</div><div class='impl-items'><h4 id='method.eq' class='method'><a class='stability Stable' title='Stable'></a><code>fn <a href='#method.eq' class='fnname'>eq</a>(&amp;self, other: <a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a><a href='http://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<h4 id='method.ne' class='tymethod'><a class='stability Stable' title='Stable'></a><code>fn <a href='#tymethod.ne' class='fnname'>ne</a>(&amp;self, other: &amp;Rhs) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+</div><h3 class='impl'><a class='stability Stable' title='Stable'></a><code>impl <a class='trait' href='http://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='struct' href='../nibble_vec/struct.NibbleVec.html' title='nibble_vec::NibbleVec'>NibbleVec</a></code></h3><div class='impl-items'><h4 id='method.fmt' class='method'><a class='stability Stable' title='Stable'></a><code>fn <a href='#method.fmt' class='fnname'>fmt</a>(&amp;self, fmt: &amp;mut <a class='struct' href='http://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='http://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></h4>
+</div><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><a class='stability Stable' title='Stable'></a><code>impl <a class='trait' href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='struct' href='../nibble_vec/struct.NibbleVec.html' title='nibble_vec::NibbleVec'>NibbleVec</a></code></h3><div class='impl-items'><h4 id='method.clone' class='method'><a class='stability Stable' title='Stable'></a><code>fn <a href='#method.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='struct' href='../nibble_vec/struct.NibbleVec.html' title='nibble_vec::NibbleVec'>NibbleVec</a></code></h4>
+<h4 id='method.clone_from' class='tymethod'><a class='stability Unstable' title='Unstable: this function is rarely used'></a><code>fn <a href='#tymethod.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code></h4>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <div id="help" class="hidden">
+        <div class="shortcuts">
+            <h1>Keyboard shortcuts</h1>
+            <dl>
+                <dt>?</dt>
+                <dd>Show this help dialog</dd>
+                <dt>S</dt>
+                <dd>Focus the search field</dd>
+                <dt>&larrb;</dt>
+                <dd>Move up in search results</dd>
+                <dt>&rarrb;</dt>
+                <dd>Move down in search results</dd>
+                <dt>&#9166;</dt>
+                <dd>Go to active search result</dd>
+            </dl>
+        </div>
+        <div class="infos">
+            <h1>Search tricks</h1>
+            <p>
+                Prefix searches with a type followed by a colon (e.g.
+                <code>fn:</code>) to restrict the search to a given type.
+            </p>
+            <p>
+                Accepted types are: <code>fn</code>, <code>mod</code>,
+                <code>struct</code>, <code>enum</code>,
+                <code>trait</code>, <code>typedef</code> (or
+                <code>tdef</code>).
+            </p>
+        </div>
+    </div>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "nibble_vec";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script async src="../search-index.js"></script>
+</body>
+</html>
