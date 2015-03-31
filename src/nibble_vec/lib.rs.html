@@ -9,7 +9,7 @@
 
     <title>lib.rs.html -- source</title>
 
-    <link rel="stylesheet" type="text/css" href="../../../main.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
 
     
     
@@ -288,8 +288,9 @@
 <span id="246">246</span>
 <span id="247">247</span>
 <span id="248">248</span>
+<span id="249">249</span>
 </pre><pre class='rust '>
-<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>core</span>, <span class='ident'>collections</span>)]</span>
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>collections</span>)]</span>
 
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>test</span>)]</span>
 <span class='kw'>mod</span> <span class='ident'>test</span>;
@@ -406,7 +407,7 @@
         <span class='self'>self</span>.<span class='ident'>overlap_copy</span>(<span class='ident'>idx</span> <span class='op'>/</span> <span class='number'>2</span>, <span class='self'>self</span>.<span class='ident'>data</span>.<span class='ident'>len</span>(), <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>tail</span>.<span class='ident'>data</span>, <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>tail</span>.<span class='ident'>length</span>, <span class='ident'>take_last</span>);
 
         <span class='comment'>// Remove the copied bytes, being careful to skip the idx byte.</span>
-        <span class='kw'>for</span> _ <span class='kw'>in</span> <span class='ident'>range</span>(<span class='ident'>idx</span> <span class='op'>/</span> <span class='number'>2</span> <span class='op'>+</span> <span class='number'>1</span>, <span class='self'>self</span>.<span class='ident'>data</span>.<span class='ident'>len</span>()) {
+        <span class='kw'>for</span> _ <span class='kw'>in</span> (<span class='ident'>idx</span> <span class='op'>/</span> <span class='number'>2</span> <span class='op'>+</span> <span class='number'>1</span>) .. <span class='self'>self</span>.<span class='ident'>data</span>.<span class='ident'>len</span>() {
             <span class='self'>self</span>.<span class='ident'>data</span>.<span class='ident'>pop</span>();
         }
 
@@ -428,15 +429,16 @@
         <span class='comment'>//  where l_d = self.data.len()</span>
         <span class='comment'>//        l_v = self.length</span>
         <span class='kw'>let</span> <span class='ident'>tail_vec_size</span> <span class='op'>=</span> (<span class='self'>self</span>.<span class='ident'>length</span> <span class='op'>-</span> <span class='ident'>idx</span> <span class='op'>+</span> <span class='number'>1</span>) <span class='op'>/</span> <span class='number'>2</span>;
+        <span class='kw'>let</span> <span class='ident'>half_idx</span> <span class='op'>=</span> <span class='ident'>idx</span> <span class='op'>/</span> <span class='number'>2</span>;
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>tail</span> <span class='op'>=</span> <span class='ident'>NibbleVec</span>::<span class='ident'>from_byte_vec</span>(<span class='ident'>Vec</span>::<span class='ident'>with_capacity</span>(<span class='ident'>tail_vec_size</span>));
 
         <span class='comment'>// Copy the bytes.</span>
-        <span class='kw'>for</span> <span class='ident'>i</span> <span class='kw'>in</span> <span class='ident'>range</span>(<span class='ident'>idx</span> <span class='op'>/</span> <span class='number'>2</span>, <span class='self'>self</span>.<span class='ident'>data</span>.<span class='ident'>len</span>()) {
+        <span class='kw'>for</span> <span class='ident'>i</span> <span class='kw'>in</span> <span class='ident'>half_idx</span> .. <span class='self'>self</span>.<span class='ident'>data</span>.<span class='ident'>len</span>() {
             <span class='ident'>tail</span>.<span class='ident'>data</span>.<span class='ident'>push</span>(<span class='self'>self</span>.<span class='ident'>data</span>[<span class='ident'>i</span>]);
         }
 
         <span class='comment'>// Pop the same bytes.</span>
-        <span class='kw'>for</span> _ <span class='kw'>in</span> <span class='ident'>range</span>(<span class='ident'>idx</span> <span class='op'>/</span> <span class='number'>2</span>, <span class='self'>self</span>.<span class='ident'>data</span>.<span class='ident'>len</span>()) {
+        <span class='kw'>for</span> _ <span class='kw'>in</span> <span class='ident'>half_idx</span> .. <span class='self'>self</span>.<span class='ident'>data</span>.<span class='ident'>len</span>() {
             <span class='self'>self</span>.<span class='ident'>data</span>.<span class='ident'>pop</span>();
         }
 
@@ -453,7 +455,7 @@
     <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
     <span class='kw'>fn</span> <span class='ident'>overlap_copy</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>start</span>: <span class='ident'>usize</span>, <span class='ident'>end</span>: <span class='ident'>usize</span>, <span class='ident'>vec</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>u8</span><span class='op'>&gt;</span>, <span class='ident'>length</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>usize</span>, <span class='ident'>include_last</span>: <span class='ident'>bool</span>) {
         <span class='comment'>// Copy up to the first half of the last byte.</span>
-        <span class='kw'>for</span> <span class='ident'>i</span> <span class='kw'>in</span> <span class='ident'>range</span>(<span class='ident'>start</span>, <span class='ident'>end</span> <span class='op'>-</span> <span class='number'>1</span>) {
+        <span class='kw'>for</span> <span class='ident'>i</span> <span class='kw'>in</span> <span class='ident'>start</span> .. (<span class='ident'>end</span> <span class='op'>-</span> <span class='number'>1</span>) {
             <span class='comment'>// The first half is the second half of the old entry.</span>
             <span class='kw'>let</span> <span class='ident'>first_half</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>data</span>[<span class='ident'>i</span>] <span class='kw-2'>&amp;</span> <span class='number'>0x0f</span>;
 
@@ -476,7 +478,7 @@
         <span class='comment'>// If the length is even, we can append directly.</span>
         <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>length</span> <span class='op'>%</span> <span class='number'>2</span> <span class='op'>==</span> <span class='number'>0</span> {
             <span class='self'>self</span>.<span class='ident'>length</span> <span class='op'>+=</span> <span class='ident'>other</span>.<span class='ident'>length</span>;
-            <span class='self'>self</span>.<span class='ident'>data</span>.<span class='ident'>push_all</span>(<span class='ident'>other</span>.<span class='ident'>data</span>.<span class='ident'>as_slice</span>());
+            <span class='self'>self</span>.<span class='ident'>data</span>.<span class='ident'>push_all</span>(<span class='kw-2'>&amp;</span><span class='ident'>other</span>.<span class='ident'>data</span>[..]);
             <span class='kw'>return</span> <span class='self'>self</span>;
         }
 
@@ -531,7 +533,7 @@
             <span class='macro'>try</span><span class='macro'>!</span>(<span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>fmt</span>, <span class='string'>&quot;{}&quot;</span>, <span class='self'>self</span>.<span class='ident'>get</span>(<span class='number'>0</span>)));
         }
 
-        <span class='kw'>for</span> <span class='ident'>i</span> <span class='kw'>in</span> <span class='ident'>range</span>(<span class='number'>1</span>, <span class='self'>self</span>.<span class='ident'>len</span>()) {
+        <span class='kw'>for</span> <span class='ident'>i</span> <span class='kw'>in</span> <span class='number'>1</span> .. <span class='self'>self</span>.<span class='ident'>len</span>() {
             <span class='macro'>try</span><span class='macro'>!</span>(<span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>fmt</span>, <span class='string'>&quot;, {}&quot;</span>, <span class='self'>self</span>.<span class='ident'>get</span>(<span class='ident'>i</span>)));
         }
         <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>fmt</span>, <span class='string'>&quot;]&quot;</span>)
@@ -577,13 +579,13 @@
     
 
     <script>
-        window.rootPath = "../../../";
+        window.rootPath = "../../";
         window.currentCrate = "nibble_vec";
         window.playgroundUrl = "";
     </script>
-    <script src="../../../jquery.js"></script>
-    <script src="../../../main.js"></script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
     
-    <script async src="../../../search-index.js"></script>
+    <script async src="../../search-index.js"></script>
 </body>
 </html>
